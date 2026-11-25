@@ -16,6 +16,10 @@ public class Loader {
     public double getPricePerHour() {
         return pricePerHour;
     }
+
+    public double getTotalPrice(){
+        return rentalHours*pricePerHour;
+    }
     public void setRentalHours(double rentalHours) {
         if (rentalHours >= 1) {
             this.rentalHours = rentalHours;
