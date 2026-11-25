@@ -1,6 +1,8 @@
 package logistics;
 
 import exception.DuplicateClientException;
+import exception.InvalidEmailException;
+import exception.InvalidVanException;
 import exception.VanServiceNotFoundException;
 import model.VanService;
 import service.NotificationService;
@@ -13,11 +15,15 @@ public class VanLogistics {
     private final Map<String, VanService> database = new HashMap<>();
     private final NotificationService notificationService;
 
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+
     public VanLogistics(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
-    public void registerVanService(String email, VanService serv) {
+    public void registerVanService(String email, VanService serv) throws InvalidEmailException{
+        validateEmail(email);
+
         database.put(email, serv);
     }
 
@@ -33,5 +39,11 @@ public class VanLogistics {
                 serv.getClientName(), finalPrice);
 
         notificationService.sendNotification(message, email);
+    }
+
+    private void validateEmail(String email) throws InvalidEmailException {
+        if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
+            throw new InvalidEmailException("Некорректный формат email: " + email);
+        }
     }
 }

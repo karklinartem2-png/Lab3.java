@@ -15,6 +15,11 @@ class SmsNotification{
 class EmailNotification{
     +sendNotification(String message, String recipient): void
 }
+
+class ConsoleNotification{
+    +sendNotification(String message, String recipient): void
+}
+
 class CorporateOrder{
     -_amountOfVans: int
 
@@ -73,13 +78,13 @@ class VanLogistics{
 
 EmailNotification ..|> NotificationService
 SmsNotification ..|> NotificationService
+ConsoleNotification ..|> NotificationService
 VanService --> Loader
 CorporateOrder --|> VanService
 PersonalOrder --|> VanService
 VanLogistics --> VanService
 VanLogistics --> NotificationService
-Main --> SmsNotification
-Main --> EmailNotification
+Main --> ConsoleNotification
 Main --> VanLogistics
 Main --> PersonalOrder
 Main --> CorporateOrder
